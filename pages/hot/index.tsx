@@ -100,7 +100,7 @@ class HotData extends Component<HotDataProps, HotDataState> {
                   ?
                   <div>
                     <MediaQuery 
-                      query="only screen and (min-width : 80 /1x)"
+                      query="only screen and (min-width : 801px)"
                     >
                       {(matches) => {
                         return (
