@@ -1,9 +1,9 @@
 # [pcrdfans.com](https://pcrdfans.com)
 
 ## About this repo
-This repository is the source code of [https://pcrdfans.com](), which is a PVP Arena data analysis website for the mobile game Princess Connect Re:Dive.
+This repository is the source code of [https://pcrdfans.com](https://pcrdfans.com), which is a PVP Arena data analysis website for the mobile game Princess Connect Re:Dive.
 
-This project use React.js + TypeScript + Next.js. The server use Go + MongoDB + Redis. The repository of server can be accessed here: [https://github.com/peterli110/pcrdfans-server]()
+This project use React.js + TypeScript + Next.js. The server use Go + MongoDB + Redis. The repository of server can be accessed here: [https://github.com/peterli110/pcrdfans-server](https://github.com/peterli110/pcrdfans-server)
 
 ## Directories
 
