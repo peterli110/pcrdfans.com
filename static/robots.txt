@@ -1,0 +1,5 @@
+# robots.txt generated at http://tool.chinaz.com/robots/
+User-agent: *
+Disallow: 
+Sitemap: https://pcrdfans.com/static/sitemap.xml
+Sitemap: http://pcrdfans.com/static/sitemap.html

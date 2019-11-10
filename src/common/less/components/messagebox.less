@@ -1,0 +1,119 @@
+.messagebox_announce {
+  color: #3c404e;
+  border-style: solid;
+  border-width: 5px 5px 10px;
+  -o-border-image: url('/static/info/common_unit_bg.png') 10 10 20 10 stretch;
+     border-image: url('/static/info/common_unit_bg.png') 10 10 20 10 fill stretch;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  display: block;
+  text-decoration: none;
+  width: 100%;
+  -webkit-transition-property: -webkit-transform;
+  transition-property: -webkit-transform;
+  transition-property: transform;
+  transition-property: transform, -webkit-transform;
+  -webkit-transition-duration: .1s;
+          transition-duration: .1s;
+  -webkit-transition-timing-function: ease-in-out;
+          transition-timing-function: ease-in-out;
+  margin-bottom: 4px;
+  text-shadow: none;
+}
+
+.messagebox_announce:active {
+  -webkit-transform: scale(.95);
+  -ms-transform: scale(.95);
+  -o-transform: scale(.95);
+  transform: scale(.95);
+}
+
+.messagebox_inner {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  box-align: center;
+  margin: -4px -4px -7px;
+}
+
+.messagebox_thumbnail {
+  width: 154px;
+  margin: 0;
+  display: block;
+  overflow: hidden;
+}
+
+.messagebox_profile_img {
+  width: 154px;
+  height: auto;
+}
+
+.messagebox_left {
+  -webkit-box-flex: 1;
+  box-flex: 1;
+  padding: 20px 15px;
+  width: 100%;
+}
+
+.messagebox_data {
+  position: relative;
+  padding-bottom: 20px;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.messagebox_upper {
+  line-height: 1;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+}
+
+.messagebox_info_img {
+  width: 95px;
+  height: 20px;
+  padding-right: 10px;
+  padding-bottom: 5px;
+}
+
+@media only screen and (min-width : 650px) {
+  .messagebox_title_ctn {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+  }
+  
+  .messagebox_info_img {
+    width: 130px;
+    height: 26px;
+    padding-right: 10px;
+    padding-bottom: 5px;
+  }
+}
+
+.messagebox_title_ctn {
+  overflow: hidden;
+  line-height: 1.3;
+  vertical-align: middle;
+}
+
+.messagebox_title {
+  display: inline-block;
+  min-height: 15px;
+}
+
+.messagebox_downer {
+  position: absolute;
+  bottom: -1px;
+  right: 0;
+  width: 100%;
+  background: url('/static/info/line_text_dot.png') repeat-x top;
+  display: block;
+  text-align: right;
+  background-size: 5px;
+  height: 13px;
+  padding-top: 6px;
+  font-size: 0.8rem;
+}

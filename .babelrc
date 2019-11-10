@@ -1,0 +1,93 @@
+{
+  "env": {
+    "development": {
+      "presets": ["next/babel", "@zeit/next-typescript/babel"],
+      "plugins": [
+        [
+          "module-resolver",
+          {
+            "root": ["./"],
+            "alias": {
+              "@components": "./src/components",
+              "@containers": "./src/containers",
+              "@common": "./src/common",
+              "@store": "./src/store",
+              "@config": "./config",
+              "@utils": "./src/utils",
+              "@type": "./types"
+            }
+          }
+        ],
+        //["@babel/plugin-proposal-decorators", { "decoratorsBeforeExport": true }],
+        ["import", {
+          "libraryName": "antd",
+          "style": true // `style: true` 会加载 less 文件
+        }],
+        ["recharts"]
+      ]
+    },
+    "production": {
+      "presets": ["next/babel", "@zeit/next-typescript/babel"],
+      "plugins": [
+        [
+          "module-resolver",
+          {
+            "root": ["./"],
+            "alias": {
+              "@components": "./src/components",
+              "@containers": "./src/containers",
+              "@common": "./src/common",
+              "@store": "./src/store",
+              "@config": "./config",
+              "@utils": "./src/utils",
+              "@type": "./types"
+            }
+          }
+        ],
+        //["@babel/plugin-proposal-decorators", { "decoratorsBeforeExport": true }],
+        ["import", {
+          "libraryName": "antd",
+          "style": true // `style: true` 会加载 less 文件
+        }],
+        ["transform-remove-console"],
+        ["recharts"]
+      ]
+    },
+    "test": {
+      "presets": [
+        [
+          "next/babel",
+          {
+            "preset-env": {
+              "modules": "commonjs"
+            }
+          }
+        ],
+        "@zeit/next-typescript/babel"
+      ],
+      "plugins": [
+        [
+          "module-resolver",
+          {
+            "root": ["./"],
+            "alias": {
+              "@components": "./src/components",
+              "@containers": "./src/containers",
+              "@common": "./src/common",
+              "@store": "./src/store",
+              "@config": "./config",
+              "@utils": "./src/utils",
+              "@type": "./types"
+            }
+          }
+        ],
+        //["@babel/plugin-proposal-decorators", { "decoratorsBeforeExport": true }],
+        ["import", {
+          "libraryName": "antd",
+          "style": true // `style: true` 会加载 less 文件
+        }],
+        ["recharts"]
+      ]
+    }
+  }
+}

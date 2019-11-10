@@ -1,0 +1,24 @@
+{
+  "name": "pcrdfans.com",
+  "script": "./build/production-server/index.js",
+  "interpreter": "node@10.16.0",
+  "cwd": "./",
+  "watch": false,
+  "instances": 0,
+  "instance_var": "INSTANCE_ID",
+  "exec_mode": "cluster",
+  "ignore_watch": [
+    "node_modules",
+    "logs",
+    "public"
+  ],
+  "watch_options": {
+    "followSymlinks": false
+  },
+  "error_file": "./logs/app-err.log",
+  "out_file": "./logs/app-out.log",
+  "env": {
+    "NODE_ENV": "production",
+    "PORT": "3000"
+  }
+}

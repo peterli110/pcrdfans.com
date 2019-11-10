@@ -1,0 +1,305 @@
+.battle_title_ctn {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  line-height: 1.8;
+}
+
+.battle_search_select {
+  border: 1px solid #ffa500;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  border-radius: 6px;
+  margin: 20px 0;
+  background-color: #fff;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
+.battle_search_result_ctn {
+  width: 100%;
+  padding: 10px 15px;
+}
+
+.battle_search_result {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  border-radius: 6px;
+  margin: 5px 0;
+  background-color: #fff;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  padding: 2px 3px;
+  border: 1px solid #404ad8;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.battle_search_single_result_ctn {
+  border: 1px solid #ffa500;
+  border-radius: 6px;
+  margin: 20px 0;
+  background-color: #fff;
+  width: 100%;
+  padding: 3px 15px;
+  min-width: 264px;
+}
+
+.battle_search_single_logo {
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin: 0 5px;
+}
+
+@media only screen and (max-width : 500px) {
+  .battle_search_empty {
+    width: 40px;
+    height: 40px;
+  }
+
+  .battle_search_select_title {
+    line-height: 40px;
+    font-weight: 400;
+  }
+
+  .battle_search_single_result {
+    display: block;
+  }
+
+  .battle_search_single_meta {
+    display: block;
+  }
+
+  .battle_search_select {
+    padding: 5px 2px;
+  }
+  
+  .battle_star_select_ctn {
+    width: 40px;
+  }
+
+  .battle_result_star_ctn {
+    width: 40px;
+  }
+
+  .battle_star_img {
+    width: 5.8px;
+  }
+
+  .battle_result_star_img {
+    width: 5.8px;
+  }
+
+  .battle_equip_img {
+    width: 18px;
+  }
+
+  .battle_result_equip_img {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+@media only screen and (min-width : 501px) {
+  .battle_search_empty {
+    width: 60px;
+    height: 60px;
+  }
+
+  .battle_search_select_title {
+    line-height: 60px;
+    font-weight: 600;
+  }
+
+  .battle_search_single_meta {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+  }
+
+  .battle_search_select {
+    padding: 5px 10px;
+    padding-right: 20px;
+  }
+
+  .battle_star_select_ctn {
+    width: 60px;
+  }
+
+  .battle_result_star_ctn {
+    width: 50px;
+  }
+
+  .battle_star_img {
+    width: 9.8px;
+  }
+
+  .battle_result_star_img {
+    width: 7.8px;
+  }
+
+  .battle_equip_img {
+    width: 24px;
+  }
+
+  .battle_result_equip_img {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+@media only screen and (max-width : 840px) {
+  .battle_search_single_result {
+    display: block;
+  }
+}
+
+@media only screen and (min-width : 841px) {
+    .battle_search_single_result {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+    }
+}
+
+.battle_search_empty {
+  border-radius: 6px;
+  background-image: url('/static/button/unknown.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  text-align: center;
+  display: inline-block;
+  margin: 2px 2px;
+}
+
+.battle_search_radio {
+  margin: 5px 0;
+  padding-right: 20px;
+  font-size: 0.9rem;
+}
+
+.battle_search_button {
+  margin: 5px 0;
+  font-size: 1rem;
+}
+
+
+#battle_chara_select .ant-collapse {
+  border-bottom: 1px solid #d9d9d9;
+}
+
+.battle_upload_description_ctn {
+  margin: 20px 0;
+  p {
+    margin-bottom: 0.5rem;
+  }
+}
+
+.battle_upload_unit_select_modal {
+  min-width: 240px;
+  .buttons {
+    margin: 8px 0;
+  }
+  .backbutton {
+    margin-left: 8px;
+  }
+}
+
+.battle_result_detail_ctn {
+  position: relative;
+}
+
+.battle_star_select_ctn {
+  margin: auto;
+  margin-top: -10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.battle_result_star_ctn {
+  position: absolute;
+  bottom: 0.34rem;
+  left: 2px;
+}
+
+.battle_star_img {
+  cursor: pointer;
+}
+
+.battle_result_equip_ctn {
+  position: absolute;
+  top: -2px;
+  left: 3px;
+}
+
+.battle_equip_img {
+  cursor: pointer;
+  margin: auto;
+  display: block;
+  margin-top: 3px;
+}
+
+.battle_equip_img_disabled {
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%);
+}
+
+.battle_more_comment {
+  border: 1px solid #ffa500;
+  padding: 5px 5px;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  .title {
+    font-size: 0.8rem;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    line-height: 1.8rem;
+  }
+}
+
+.battle_search_private {
+  padding: 2px 15px;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 0.8rem;
+  border-radius: 5px;
+  width: fit-content;
+}
+
+.battle_search_iseditor {
+  padding: 1px 14px;
+  border: 1px solid #007bff;
+  color: #007bff;
+  font-size: 0.8rem;
+  border-radius: 5px;
+  width: fit-content;
+  display: inline-block;
+  margin-left: 10px;
+}
+
+.battle_search_result_btns {
+  margin-top: 5px;
+}
