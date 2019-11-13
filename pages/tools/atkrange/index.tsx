@@ -389,7 +389,7 @@ class AtkRange extends React.Component<PageProps, PageState> {
   private renderSkillInfo = () => {
     const { skillInfo } = this.state;
     if (skillInfo) {
-      let text = "*由于部分技能带强制位移，实际效果可能与计算不一致(比如水狗推完再ub)";
+      let text = "*相关数据来自解包，实际效果可能与理论计算不一致";
       if (skillInfo.actions instanceof Array && skillInfo.actions.length <= 0) {
         text = "*该技能不是伤害类技能";
       }

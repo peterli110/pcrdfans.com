@@ -8,11 +8,19 @@ interface MessageBoxProps {
   type: 'info' | 'update',
   showImage?: boolean,
   extra?: ReactNode,
+  messageStyle?: React.CSSProperties,
 }
 
 
 
-const MessageBox: React.FC<MessageBoxProps> = ({ title, date, type, showImage = true, extra }) => {
+const MessageBox: React.FC<MessageBoxProps> = ({ 
+  title, 
+  date, 
+  type, 
+  showImage = true, 
+  extra,
+  messageStyle,
+ }) => {
   const [imgIndex, setImgIndex] = useState(0);
   
   useEffect(() => {
@@ -47,12 +55,13 @@ const MessageBox: React.FC<MessageBoxProps> = ({ title, date, type, showImage = 
                 <img src={typeurl} className="messagebox_info_img" />
                 <span
                   className="messagebox_title"
+                  style={messageStyle}
                 >
                   {title}
-                  {
-                    extra ? extra : null
-                  }
                 </span>
+                {
+                  extra ? extra : null
+                }
               </li>
             </ul>
             <div className="messagebox_downer">

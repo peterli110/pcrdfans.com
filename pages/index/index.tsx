@@ -1,3 +1,4 @@
+import GithubBtn from '@components/githubbutton';
 import ItemBox from '@components/itembox/ItemBox';
 import LogoButton from '@components/logobutton/LogoButton';
 import MessageBox from '@components/messagebox/MessageBox';
@@ -30,6 +31,12 @@ class Home extends Component<PageProps, any> {
     >
       ヒカリ@プリコネ
     </Button>;
+
+    const gitBtn =
+    <GithubBtn
+      url={"https://github.com/peterli110/pcrdfans.com"}
+      title={"Github"}
+    />;
     return (
       <div className="body_div_ctn">
         <ItemBox>
@@ -52,6 +59,14 @@ class Home extends Component<PageProps, any> {
               date={"2019/9/25 16:40"}
               type={"info"}
               extra={twitterBtn}
+              messageStyle={{ lineHeight: "24px", marginRight: "10px" }}
+            />
+            <MessageBox
+              title={"项目地址: "}
+              date={"2019/11/13 00:54"}
+              type={"info"}
+              extra={gitBtn}
+              messageStyle={{lineHeight: "32px", marginRight: "10px"}}
             />
           </div>
         </ItemBox>
