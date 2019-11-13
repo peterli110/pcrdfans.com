@@ -1,7 +1,6 @@
 import charaMap from '@config/constants/charas.json';
 import chara6xMap from '@config/constants/charas6x.json';
 import { AppState } from '@store/store';
-import { UserState } from '@store/user/userReducers';
 import * as React from 'react';
 import { connect } from 'react-redux';
 
@@ -13,7 +12,6 @@ interface CharacterProps {
   onSelect?: (k: number, l: boolean) => void,
   noBorder?: boolean,
   style?: React.CSSProperties,
-  user?: UserState,
   borderRadius?: number,
   borderWidth?: number,
   grey?: boolean,
@@ -29,7 +27,20 @@ interface JsonProps {
   [key: number]: SubJsonProps,
 }
 
-const Character: React.FC<CharacterProps> = ({ cid = 100101, width = 60, show1x = false, selected = false, onSelect, noBorder = false, style = {}, user, borderRadius = 6, borderWidth = 1, grey = false, show6x = false }) => {
+const Character: React.FC<CharacterProps & AppState> = ({ 
+  cid = 100101, 
+  width = 60, 
+  show1x = false, 
+  selected = false, 
+  onSelect, 
+  noBorder = false, 
+  style = {}, 
+  user, 
+  borderRadius = 6, 
+  borderWidth = 1, 
+  grey = false, 
+  show6x = false 
+}) => {
   let charaid = cid; // in case of cid overflow
   let mapValue: SubJsonProps = (charaMap as JsonProps)[cid];
   if (!mapValue) {
@@ -92,7 +103,6 @@ const mapStateToProps = (state: AppState) => {
   return state;
 };
 
-export default connect(
-  mapStateToProps,
-  null,
+export default connect<AppState, {}, CharacterProps, AppState>(
+  mapStateToProps
 )(Character);

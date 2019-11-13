@@ -3,6 +3,7 @@ import CharaSelect from '@components/charaselect/CharaSelect';
 import ItemBox from '@components/itembox/ItemBox';
 import Units from '@config/constants/unito.json';
 import { calcHash, siteDescription, siteName } from '@config/index';
+import * as actions from '@store/actions/actions';
 import { AppState } from '@store/store';
 import { BattleDetail, BattleUploadRequest } from '@type/battle';
 import { UnitObject } from '@type/unit';
@@ -18,12 +19,18 @@ import Router from 'next/router';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import MediaQuery, { MediaQueryMatchers } from 'react-responsive';
+import { bindActionCreators, Dispatch } from 'redux';
+
 
 const mobileWidth = 501;
 const UnitObj: UnitObject = Units as UnitObject;
 const { TextArea } = Input;
 
 type showModalType = 'atk' | 'def' | null;
+
+interface PageProps extends AppState {
+  actions: actions.Actions
+}
 
 interface UploadState {
   atk: Set<number>,
@@ -36,11 +43,13 @@ interface UploadState {
   isBtnLoading: boolean,
   showModal: showModalType,
   uploadType: number,
-  region: number,
+  showDetail: boolean,
+  detailType: showModalType,
+  detailIdx: number,
 }
 
-class Upload extends React.Component<AppState, UploadState> {
-  constructor(props: AppState) {
+class Upload extends React.Component<PageProps, UploadState> {
+  constructor(props: PageProps) {
     super(props);
     this.state = {
       atk: new Set(),
@@ -53,7 +62,9 @@ class Upload extends React.Component<AppState, UploadState> {
       activePanel: ['front', 'center', 'back'],
       showModal: null,
       uploadType: 1,
-      region: 1,
+      showDetail: false,
+      detailType: null,
+      detailIdx: 0,
     };
   }
 
@@ -61,19 +72,10 @@ class Upload extends React.Component<AppState, UploadState> {
     this.setState({
       isMount: true,
     });
-
-    if (window.localStorage) {
-      const r = window.localStorage.getItem('Upload_region');
-      if (r) {
-        this.setState({
-          region: parseInt(r, 10),
-        });
-      }
-    }
   }
 
   public render() {
-    const { isMount, activePanel, showModal, atk, def } = this.state;
+    const { isMount, activePanel, showModal, atk, def, showDetail } = this.state;
     const { isLogin, userInfo } = this.props.user;
     const responsive: Partial<MediaQueryMatchers> = { deviceWidth: 320 };
 
@@ -103,21 +105,33 @@ class Upload extends React.Component<AppState, UploadState> {
             </div>
             <div className="battle_upload_description_ctn">
               <p>{'*注意事项'}</p>
-              <p>{'1: 请尽可能提供详细信息，如星数，是否带专武等'}</p>
-              <p>{'2: 请正确选择国服或者日/台服, 浏览器会记住上次选择的服务器信息'}</p>
+              <p>
+                数据是以日服最新数据为基准的，选国服/台服的时候请确认
+                <span style={{ color: "#ff2d54"}}>
+                  星数，专武
+                </span>
+                是否符合当前版本
+              </p>
             </div>
             <div>
               <div className="body_subtitle" style={{marginTop: '20px'}}>
-                选择服务器
+                选择角色范围
               </div>
               <Radio.Group
-               value={this.state.region} 
+               value={this.props.server.server} 
                buttonStyle="solid"
                onChange={this.onRegionChange}
               >
-                <Radio.Button value={1}>国服</Radio.Button>
-                <Radio.Button value={2}>日/台服</Radio.Button>
+                <Radio.Button value={1}>全部</Radio.Button>
+                <Radio.Button value={2}>国服</Radio.Button>
+                <Radio.Button value={3}>台服</Radio.Button>
+                <Radio.Button value={4}>日服</Radio.Button>
               </Radio.Group>
+            </div>
+            <div className="battle_search_select battle_search_result_ctn">
+              <div style={{ fontSize: '0.8rem' }}>
+                *上传后会自动分配可能对应的服务器，如果有特殊条件请写在评论里
+              </div>
             </div>
             <div style={{marginTop: '20px'}}>
               <MediaQuery
@@ -128,6 +142,17 @@ class Upload extends React.Component<AppState, UploadState> {
                   return (
                     <div>
                       {this.renderSelect(false, !matches)}
+                      {
+                        !matches
+                          ?
+                          <div className="battle_search_select battle_search_result_ctn">
+                            <div style={{ fontSize: '0.8rem' }}>
+                              *手机如果不方便点星级专武的话可以点角色头像放大
+                            </div>
+                          </div>
+                          :
+                          null
+                      }
                       {this.renderSelect(true, !matches)}
                     </div>
                   );
@@ -215,6 +240,17 @@ class Upload extends React.Component<AppState, UploadState> {
             </MediaQuery>
           </div>
         </Modal>
+        <Modal
+          visible={showDetail}
+          title={null}
+          footer={null}
+          onOk={() => this.hideDetailModal()}
+          onCancel={() => this.hideDetailModal()}
+          width={"200px"}
+          style={{minWidth:"150px"}}
+        >
+          {this.renderDetailModal()}
+        </Modal>
       </div>
     );
   }
@@ -226,17 +262,54 @@ class Upload extends React.Component<AppState, UploadState> {
     });
   }
 
-  private onRegionChange = (e: RadioChangeEvent) => {
-    if (window.localStorage) {
-      window.localStorage.setItem('Upload_region', e.target.value);
+  private calcSet = (e: Set<number>, value: number) => {
+    const { server } = this.props;
+    if (value === 2) {
+      const cn = new Set(server.cn);
+      return new Set([...e].filter(x => !cn.has(x)));
     }
+    if (value === 3) {
+      const tw = new Set(server.tw);
+      return new Set([...e].filter(x => !tw.has(x)));
+    }
+    return e;
+  }
+
+  private onRegionChange = (event: RadioChangeEvent) => {
+    const { value } = event.target;
+    const { atk, def } = this.state;
+    if (window.localStorage) {
+      window.localStorage.setItem('Selected_Server', value);
+    }
+    this.props.actions.SetServer(value);
+    const atkDiff = this.calcSet(atk, value);
+    const defDiff = this.calcSet(def, value);
+    const atkArr = sortUnitId(Array.from(atkDiff));
+    const atkDetail: BattleDetail[] = atkArr.map(e => {
+      return {
+        equip: UnitObj[e] && UnitObj[e].equip,
+        id: e,
+        star: UnitObj[e].maxrarity, // initialize with max stars
+      };
+    });
+    const defArr = sortUnitId(Array.from(defDiff));
+    const defDetail: BattleDetail[] = defArr.map(e => {
+      return {
+        equip: UnitObj[e] && UnitObj[e].equip,
+        id: e,
+        star: UnitObj[e].maxrarity, // initialize with 5 stars
+      };
+    });
     this.setState({
-      region: e.target.value,
+      atk: atkDiff,
+      atkDetail,
+      def: defDiff,
+      defDetail,
     });
   }
 
   private onSubmit = async() => {
-    const { atkDetail, defDetail, comment, uploadType, region } = this.state;
+    const { atkDetail, defDetail, comment, uploadType } = this.state;
 
     if (atkDetail.length !== 5 || defDetail.length !== 5) {
       return Modal.info({
@@ -257,7 +330,6 @@ class Upload extends React.Component<AppState, UploadState> {
         def: defDetail,
         nonce,
         private: uploadType,
-        region,
         ts,
       };
       body._sign = calcHash(body);
@@ -424,17 +496,17 @@ class Upload extends React.Component<AppState, UploadState> {
         });
       } else if (showModal === 'def') {
         const defArr = sortUnitId(Array.from(def));
-          const defDetail: BattleDetail[] = defArr.map(e => {
-            return {
-              equip: UnitObj[e] && UnitObj[e].equip,
-              id: e,
-              star: UnitObj[e].maxrarity, // initialize with 5 stars
-            };
-          });
-          this.setState({
-            showModal: t,
-            defDetail,
-          });
+        const defDetail: BattleDetail[] = defArr.map(e => {
+          return {
+            equip: UnitObj[e] && UnitObj[e].equip,
+            id: e,
+            star: UnitObj[e].maxrarity, // initialize with 5 stars
+          };
+        });
+        this.setState({
+          showModal: t,
+          defDetail,
+        });
       }
     } else {
       this.setState({
@@ -443,7 +515,85 @@ class Upload extends React.Component<AppState, UploadState> {
     }
   }
 
-  private renderSelect(isDef?: boolean, isMobile?: boolean) {
+  private hideDetailModal = () => {
+    this.setState({
+      showDetail: false,
+    });
+  }
+
+  private showDetailModal = (isMobile: boolean, type: showModalType, idx: number) => {
+    if (!isMobile) return;
+    this.setState({
+      showDetail: true,
+      detailType: type,
+      detailIdx: idx,
+    });
+  }
+
+  private renderDetailModal() {
+    const { 
+      atkDetail,
+      defDetail,
+      showDetail,
+      detailType,
+      detailIdx,
+    } = this.state;
+
+    if (showDetail && detailType) {
+      const target = detailType === "atk" ? atkDetail : defDetail;
+      const v = target[detailIdx];
+      const idx = detailIdx;
+      let starMap = Array(5).fill(1);
+      const is6x = UnitObj[v.id].maxrarity === 6;
+      if (is6x) {
+        starMap = Array(6).fill(1);
+      }
+      return (
+        <div style={{width: '100%', minHeight: '200px'}}>
+          <div style={{width: "100px", margin: "0px auto", marginTop: "15px"}}>
+            <Character
+              cid={v.id}
+              selected={true}
+              noBorder={true}
+              width={100}
+              show6x={is6x && v.star === 6}
+            />
+          </div>
+          <div className="battle_star_select_ctn" style={{marginTop: '15px'}}>
+            {starMap.map((_, i) => {
+              const rotate = is6x && i === 5 ? 'hue-rotate(270deg)' : 'unset';
+              return (
+                <span className="star_ctn" key={i} onClick={() => this.setStar(detailType, idx, i + 1)}>
+                  <img
+                    src={`/static/icon/star${i < v.star ? "" : "_disabled"}.png`}
+                    className="battle_star_img"
+                    style={{filter: rotate, width: "20px"}}
+                  />
+                </span>
+              );
+            })}
+          </div>
+          {
+            UnitObj[v.id.toString()] && UnitObj[v.id.toString()].equip
+              ?
+              <div className="battle_equip_select_ctn" style={{marginTop: "15px"}}>
+                <span onClick={() => this.setEquip(detailType, idx, !v.equip)}>
+                  <img
+                    src={"/static/icon/equip.png"}
+                    className={`battle_equip_img${v.equip ? "" : " battle_equip_img_disabled"}`}
+                    style={{width: "25px"}}
+                  />
+                </span>
+              </div>
+              :
+              null
+          }
+        </div>
+      );
+    }
+  }
+
+  private renderSelect(isDef: boolean, isMobile: boolean) {
     const { atkDetail, defDetail } = this.state;
     const selected: any[] = [];
     const empty: any[] = [];
@@ -463,6 +613,7 @@ class Upload extends React.Component<AppState, UploadState> {
               noBorder={true}
               width={isMobile ? 40 : 60}
               show6x={is6x && v.star === 6}
+              onSelect={() => this.showDetailModal(isMobile, "atk", idx)}
             />
             <div className="battle_star_select_ctn">
               {starMap.map((_, i) => {
@@ -518,6 +669,7 @@ class Upload extends React.Component<AppState, UploadState> {
               noBorder={true}
               width={isMobile ? 40 : 60}
               show6x={is6x && v.star === 6}
+              onSelect={() => this.showDetailModal(isMobile, "def", idx)}
             />
             <div className="battle_star_select_ctn">
               {starMap.map((_, i) => {
@@ -590,7 +742,13 @@ const mapStateToProps = (state: AppState) => {
   return state;
 };
 
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return {
+    actions: bindActionCreators<actions.Actions, any>(actions, dispatch),
+  };
+};
+
 export default connect(
   mapStateToProps,
-  null,
+  mapDispatchToProps,
 )(Upload);

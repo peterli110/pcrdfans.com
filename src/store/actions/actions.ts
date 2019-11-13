@@ -6,6 +6,8 @@ export interface Actions {
   IsLogin: () => Promise<Result>,
   HandleOAuth: (s: string) => Promise<Result>,
   LogOut: () => Promise<Result>,
+  UnitsDiff: () => Promise<Result>,
+  SetServer: (n: number) => void,
 }
 
 export const IsLogin = () => {
@@ -23,5 +25,17 @@ export const HandleOAuth = (data: string) => {
 export const LogOut = () => {
   return async(dispatch: Dispatch) => {
     return requests.logOut(dispatch);
+  };
+};
+
+export const UnitsDiff = () => {
+  return async(dispatch: Dispatch) => {
+    return requests.getUnitInfo(dispatch);
+  };
+};
+
+export const SetServer = (n: number) => {
+  return (dispatch: Dispatch) => {
+    return requests.setServer(dispatch, n);
   };
 };

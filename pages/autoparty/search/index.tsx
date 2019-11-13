@@ -8,7 +8,8 @@ import { ManualPartyRequest, ManualPartyResult } from '@type/battle';
 import { generateNonce, sortUnitId } from '@utils/functions';
 import { ErrorModal, LoginModal, TooManyModal } from '@utils/modals';
 import { postServer } from '@utils/request';
-import { Button, Icon, Modal, Spin } from 'antd';
+import { Button, Icon, Modal, Radio, Spin } from 'antd';
+import { RadioChangeEvent } from 'antd/lib/radio';
 import stringify from 'json-stable-stringify';
 import moment from 'moment-timezone';
 import Head from 'next/head';
@@ -19,7 +20,8 @@ import MediaQuery, { MediaQueryMatchers } from 'react-responsive';
 import { bindActionCreators, Dispatch } from 'redux';
 
 const mobileWidth = 501;
-
+const RadioButton = Radio.Button;
+const RadioGroup = Radio.Group;
 const responsive: Partial<MediaQueryMatchers> = { deviceWidth: 320 };
 
 
@@ -81,7 +83,12 @@ class Battle extends Component<PageProps, PageState> {
       const spinIcon = <Icon type="loading" style={{ fontSize: 60 }} spin={true} />;
       return (
         <div className="global_isloading_center">
-          <Spin indicator={spinIcon} />
+          <Head>
+            <title>{`${routerName.manualparty} - ${siteName}`}</title>
+          </Head>
+          <ItemBox style={{minHeight: '50vh', minWidth: '70vw'}}>
+            <Spin indicator={spinIcon} />
+          </ItemBox>
         </div>
       );
     }
@@ -152,6 +159,19 @@ class Battle extends Component<PageProps, PageState> {
                 }}
               </MediaQuery>
             </div>
+            <div className="body_margin_content">
+              <RadioGroup
+                value={this.props.server.server} 
+                buttonStyle="solid"
+                onChange={this.onRegionChange}
+                className="battle_search_radio"
+              >
+                <RadioButton value={1}>全部角色</RadioButton>
+                <RadioButton value={2}>国服</RadioButton>
+                <RadioButton value={3}>台服</RadioButton>
+                <RadioButton value={4}>日服</RadioButton>
+              </RadioGroup>
+            </div>
             <MediaQuery
               minWidth={mobileWidth}
               values={isMount ? undefined : responsive}
@@ -180,6 +200,28 @@ class Battle extends Component<PageProps, PageState> {
         </ItemBox>
       </div>
     );
+  }
+
+  private onRegionChange = (e: RadioChangeEvent) => {
+    const { value } = e.target;
+    const { selectedCharas } = this.state;
+    const { server } = this.props;
+    if (window.localStorage) {
+      window.localStorage.setItem('Selected_Server', value);
+    }
+    this.props.actions.SetServer(value);
+    if (value === 2) {
+      const cn = new Set(server.cn);
+      this.setState({
+        selectedCharas: new Set([...selectedCharas].filter(x => !cn.has(x)))
+      });
+    }
+    if (value === 3) {
+      const tw = new Set(server.tw);
+      this.setState({
+        selectedCharas: new Set([...selectedCharas].filter(x => !tw.has(x)))
+      });
+    }
   }
 
   private handleClear = () => {
@@ -214,7 +256,7 @@ class Battle extends Component<PageProps, PageState> {
     if (s) {
       selectedCharas.delete(e);
       this.setState({
-        selectedCharas,
+        selectedCharas: new Set(Array.from(selectedCharas)),
       });
     }
 
@@ -225,7 +267,7 @@ class Battle extends Component<PageProps, PageState> {
       }
       selectedCharas.add(e);
       this.setState({
-        selectedCharas,
+        selectedCharas: new Set(Array.from(selectedCharas)),
       });
     }
   }
@@ -395,6 +437,7 @@ class Battle extends Component<PageProps, PageState> {
     const body: ManualPartyRequest = {
       def,
       nonce,
+      region: this.props.server.server,
       ts,
     };
     body._sign = calcHash(body);

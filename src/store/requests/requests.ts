@@ -1,3 +1,4 @@
+import { setServerInfo, setUnitData } from '@store/units/unitsActions';
 import { setLoginState, setUserInfo } from '@store/user/userActions';
 import { ErrRequest, postServer } from '@utils/request';
 import Router from 'next/router';
@@ -52,4 +53,22 @@ export const logOut = async(dispatch: Dispatch) => {
     console.log(e);
     return ErrRequest;
   }
+};
+
+export const getUnitInfo = async(dispatch: Dispatch) => {
+  try {
+    const r = await postServer("/unitdiff");
+    console.log(r);
+    if (r.code === 0) {
+      dispatch(setUnitData(r.data));
+    }
+    return r;
+  } catch(e) {
+    console.log(e);
+    return ErrRequest;
+  }
+};
+
+export const setServer = async(dispatch: Dispatch, id: number) => {
+  dispatch(setServerInfo(id));
 };

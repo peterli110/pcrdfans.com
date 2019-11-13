@@ -68,6 +68,13 @@ class MyApp extends App<{ store: Store<AppState> }, PageState> {
     };
 
     this.props.store.dispatch<any>(actions.IsLogin());
+    this.props.store.dispatch<any>(actions.UnitsDiff());
+    if (window.localStorage) {
+      const r = window.localStorage.getItem('Selected_Server');
+      if (r) {
+        this.props.store.dispatch<any>(actions.SetServer(parseInt(r, 10)));
+      }
+    }
   }
 
   public render() {

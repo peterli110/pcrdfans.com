@@ -3,6 +3,7 @@ import CharaSelect from '@components/charaselect/CharaSelect';
 import ItemBox from '@components/itembox/ItemBox';
 import Units from '@config/constants/unito.json';
 import { calcHash, routerName, siteDescription, siteName } from '@config/index';
+import * as actions from '@store/actions/actions';
 import { AppState } from '@store/store';
 import { BattleComment, BattleDetail, BattleRequest, BattleResult, LikeRequest, UpdateCommentRequest } from '@type/battle';
 import { UnitObject } from '@type/unit';
@@ -18,6 +19,7 @@ import Router, { SingletonRouter, withRouter } from 'next/router';
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import MediaQuery, { MediaQueryMatchers } from 'react-responsive';
+import { bindActionCreators, Dispatch } from 'redux';
 import ATKRange from '../tools/atkrange';
 
 
@@ -35,6 +37,7 @@ const UnitObj: UnitObject = Units as UnitObject;
 
 interface BattleProps extends AppState {
   router: SingletonRouter,
+  actions: actions.Actions,
 }
 
 interface BattleState {
@@ -62,7 +65,6 @@ interface BattleState {
   showAtkRange: boolean,
   atkRangeAtk: number[],
   atkRangeDef: number[],
-  region: number,
 }
 
 type TabInfo = 'data1' | 'data2' | 'data3';
@@ -95,24 +97,15 @@ class Battle extends Component<BattleProps, BattleState> {
       showAtkRange: false,
       atkRangeAtk: [],
       atkRangeDef: [],
-      region: 1,
     };
   }
 
 
   public async componentDidMount() {
+    console.log(this.props);
     this.setState({
       isMount: true,
     });
-
-    if (window.localStorage) {
-      const r = window.localStorage.getItem('Search_region');
-      if (r) {
-        this.setState({
-          region: parseInt(r, 10),
-        });
-      }
-    }
 
     try {
       // check if query existed
@@ -420,21 +413,35 @@ class Battle extends Component<BattleProps, BattleState> {
   }
 
   private onRegionChange = (e: RadioChangeEvent) => {
+    const { value } = e.target;
+    const { selectedCharas } = this.state;
+    const { server } = this.props;
     if (window.localStorage) {
-      window.localStorage.setItem('Search_region', e.target.value);
+      window.localStorage.setItem('Selected_Server', value);
     }
-    this.setState({
-      region: e.target.value,
-    });
+    this.props.actions.SetServer(value);
+    if (value === 2) {
+      const cn = new Set(server.cn);
+      this.setState({
+        selectedCharas: new Set([...selectedCharas].filter(x => !cn.has(x)))
+      });
+    }
+    if (value === 3) {
+      const tw = new Set(server.tw);
+      this.setState({
+        selectedCharas: new Set([...selectedCharas].filter(x => !tw.has(x)))
+      });
+    }
   }
 
+  // WTF??? component will not update??? bug?
   private onCharaSelect = (e: number, s: boolean) => {
     const { selectedCharas } = this.state;
     // cancel select
     if (s) {
       selectedCharas.delete(e);
       this.setState({
-        selectedCharas,
+        selectedCharas: new Set(Array.from(selectedCharas)),
       });
     }
 
@@ -445,7 +452,7 @@ class Battle extends Component<BattleProps, BattleState> {
       }
       selectedCharas.add(e);
       this.setState({
-        selectedCharas,
+        selectedCharas: new Set(Array.from(selectedCharas)),
       });
     }
   }
@@ -489,15 +496,21 @@ class Battle extends Component<BattleProps, BattleState> {
         </div>
         <div className="body_margin_content">
           <RadioGroup
-            value={this.state.region} 
+            value={this.props.server.server} 
             buttonStyle="solid"
             onChange={this.onRegionChange}
             className="battle_search_radio"
           >
-            <RadioButton value={1}>搜索全部</RadioButton>
+            <RadioButton value={1}>全部角色</RadioButton>
             <RadioButton value={2}>国服</RadioButton>
-            <RadioButton value={3}>日/台服</RadioButton>
+            <RadioButton value={3}>台服</RadioButton>
+            <RadioButton value={4}>日服</RadioButton>
           </RadioGroup>
+        </div>
+        <div className="battle_search_select battle_search_result_ctn">
+          <div style={{ fontSize: '0.8rem' }}>
+            *搜索的结果只会返回已选择服务器里存在的角色
+          </div>
         </div>
         <div style={{minWidth: '254px'}}>
           <RadioGroup
@@ -1089,7 +1102,6 @@ class Battle extends Component<BattleProps, BattleState> {
       cachedCharaByTab,
       hotSearch,
       showHotSearch,
-      region,
     } = this.state;
     const def: number[] = fromButton ? Array.from(selectedCharas) : cachedCharas;
     
@@ -1116,7 +1128,7 @@ class Battle extends Component<BattleProps, BattleState> {
       def,
       nonce,
       page,
-      region,
+      region: this.props.server.server,
       sort,
       ts,
     };
@@ -1124,7 +1136,6 @@ class Battle extends Component<BattleProps, BattleState> {
     this.setState({
       isLoading: true,
     });
-
     try {
       const result = await postServer('/search', stringify(body));
       console.log(result);
@@ -1259,7 +1270,14 @@ const mapStateToProps = (state: AppState) => {
   return state;
 };
 
+
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return {
+    actions: bindActionCreators<actions.Actions, any>(actions, dispatch),
+  };
+};
+
 export default connect(
   mapStateToProps,
-  null,
+  mapDispatchToProps,
 )(withRouter(Battle));

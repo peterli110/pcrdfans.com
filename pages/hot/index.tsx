@@ -62,7 +62,9 @@ class HotData extends Component<HotDataProps, HotDataState> {
           <Head>
             <title>{`${routerName.hot} - ${siteName}`}</title>
           </Head>
-          <Spin indicator={spinIcon} />
+          <ItemBox style={{minHeight: '50vh', minWidth: '70vw'}}>
+            <Spin indicator={spinIcon} />
+          </ItemBox>
         </div>
       );
     }

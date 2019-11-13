@@ -156,6 +156,12 @@ class Home extends Component<PageProps, any> {
               更新历史
             </div>
             <MessageBox
+              title={"三个服务器分开了，优化了上传时移动端不好选星级的问题"}
+              date={"2019/11/12 16:32"}
+              type={"update"}
+              showImage={false}
+            />
+            <MessageBox
               title={"加入了国服的选项，现在上传和评论作业以及不需要登录了，增加了修改密码的功能，修复了一些bug"}
               date={"2019/11/10 02:00"}
               type={"update"}
