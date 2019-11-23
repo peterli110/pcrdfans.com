@@ -8,7 +8,7 @@ import { UserState } from '@store/user/userReducers';
 import { AtkRangeRequest } from '@type/atkrange';
 import { UnitObject } from '@type/unit';
 import { generateNonce, sortUnitId } from '@utils/functions';
-import { LoginModal, RegionNotSupportModal, TooManyModal } from '@utils/modals';
+import { ErrorModal, LoginModal, RegionNotSupportModal, TooManyModal } from '@utils/modals';
 import { postServer } from '@utils/request';
 import { Button, Dropdown, Menu, Modal, Spin } from 'antd';
 import stringify from 'json-stable-stringify';
@@ -146,9 +146,10 @@ class AtkRange extends React.Component<PageProps, PageState> {
             </div>
             <div className="battle_upload_description_ctn">
               <p>{'*注意事项'}</p>
-              <p>{'1: 本功能还在开发中，暂时只能计算伤害类技能范围'}</p>
-              <p>{'2: 请登录后再使用'}</p>
-              <p>{'3: 本功能会屏蔽日本ip地址，挂加速器和在日本的小伙伴可以联系我开个权限'}</p>
+              <p>{'1: 重写了大佬'}<a href="http://bbs.nga.cn/nuke.php?func=ucp&uid=4463230" target="_blank">無の盡</a>{'授权提供的相关计算代码，现在结果更准确了'}</p>
+              <p>{'2: 本功能还在继续完善中，暂时只能计算伤害类技能范围'}</p>
+              <p>{'3: 请登录后再使用'}</p>
+              <p>{'4: 本功能会屏蔽日本ip地址，挂加速器和在日本的小伙伴可以联系我开个权限'}</p>
             </div>
             <Spin spinning={this.state.isBtnLoading}>
               <MediaQuery
@@ -323,6 +324,12 @@ class AtkRange extends React.Component<PageProps, PageState> {
       });
     }
 
+    if ((atkArr.length === 1 && atkArr[0] === 105201) || (defArr.length === 1 && defArr[0] === 105201)) {
+      return Modal.info({
+        title: `暂时不支持只有一个羊驼的阵容，请选择更多角色`,
+      });
+    }
+
     this.setState({
       isBtnLoading: true,
     });
@@ -359,6 +366,10 @@ class AtkRange extends React.Component<PageProps, PageState> {
         });
       } else if (r.code === 1) {
         return LoginModal();
+      } else if (r.code === 5) {
+        return Modal.info({
+          title: `暂时不支持只有一个羊驼的阵容，请选择更多角色`,
+        });
       } else if (r.code === 110) {
         return Modal.info({
           title: `选择的角色不正确(ノ▼Д▼)ノ`,
@@ -373,16 +384,12 @@ class AtkRange extends React.Component<PageProps, PageState> {
         return RegionNotSupportModal();
       }
       else {
-        return Modal.error({
-          title: `请求失败，请重试(ノ▼Д▼)ノ`,
-        });
+        return ErrorModal();
       }
     } catch (err) {
       console.log(err);
       this.setState({isBtnLoading: false});
-      return Modal.error({
-        title: `请求失败，请重试(ノ▼Д▼)ノ`,
-      });
+      return ErrorModal();
     }
   }
 

@@ -799,7 +799,7 @@ class Battle extends Component<BattleProps, BattleState> {
                     style={{marginLeft: '10px'}}
                     onClick={() => this.onOpenAtkRange(battleResult.atk, battleResult.def)}
                   >
-                    {`攻击范围(测试版)`}
+                    {`攻击范围计算`}
                   </Button>
                   :
                   null

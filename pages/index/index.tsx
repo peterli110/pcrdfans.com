@@ -171,6 +171,18 @@ class Home extends Component<PageProps, any> {
               更新历史
             </div>
             <MessageBox
+              title={"更新了攻击范围计算器的算法，结果更准确了"}
+              date={"2019/11/22 18:21"}
+              type={"update"}
+              showImage={false}
+            />
+            <MessageBox
+              title={"修复了部分浏览器不能登录的问题"}
+              date={"2019/11/14 15:11"}
+              type={"update"}
+              showImage={false}
+            />
+            <MessageBox
               title={"三个服务器分开了，优化了上传时移动端不好选星级的问题"}
               date={"2019/11/12 16:32"}
               type={"update"}
@@ -233,18 +245,6 @@ class Home extends Component<PageProps, any> {
             <MessageBox
               title={"大幅优化了竞技场组合排名的加载速度"}
               date={"2019/07/08 16:30"}
-              type={"update"}
-              showImage={false}
-            />
-            <MessageBox
-              title={"增加了竞技场组合排名，以后将会作为自动配队的参考条件之一"}
-              date={"2019/07/02 20:48"}
-              type={"update"}
-              showImage={false}
-            />
-            <MessageBox
-              title={"增加了角色属性计算器和时间轴计算器(测试中)"}
-              date={"2019/07/01 17:45"}
               type={"update"}
               showImage={false}
             />
