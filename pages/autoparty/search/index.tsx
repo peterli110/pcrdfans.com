@@ -113,12 +113,6 @@ class Battle extends Component<PageProps, PageState> {
               <p>
                 {"*作业里显示的阵容数，点赞数和点灭数都是该阵容的总数，点阵容数按钮可以快速查询该阵容的作业"}
               </p>
-              <p>
-                {"*特别说明："}
-              </p>
-              <p className="sub_rule">
-                {"本功能会屏蔽日本ip地址，挂加速器和在日本的小伙伴可以联系我开个权限"}
-              </p>
             </div>
             <div className="battle_title_ctn">
               <div className="body_title" />

@@ -149,7 +149,6 @@ class AtkRange extends React.Component<PageProps, PageState> {
               <p>{'1: 重写了大佬'}<a href="http://bbs.nga.cn/nuke.php?func=ucp&uid=4463230" target="_blank">無の盡</a>{'授权提供的相关计算代码，现在结果更准确了'}</p>
               <p>{'2: 本功能还在继续完善中，暂时只能计算伤害类技能范围'}</p>
               <p>{'3: 请登录后再使用'}</p>
-              <p>{'4: 本功能会屏蔽日本ip地址，挂加速器和在日本的小伙伴可以联系我开个权限'}</p>
             </div>
             <Spin spinning={this.state.isBtnLoading}>
               <MediaQuery

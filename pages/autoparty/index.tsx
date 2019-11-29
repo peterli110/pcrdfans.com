@@ -100,12 +100,6 @@ class AutoParty extends Component<AutoPartyProps, AutoPartyState> {
             <p className="sub_rule">
               {"生成随机队伍是根据一定的算法自动生成的，每种模式都会有一定的随机因素，所以可能会有看着奇怪的阵容（"}
             </p>
-            <p>
-              {"*特别说明："}
-            </p>
-            <p className="sub_rule">
-              {"本功能会屏蔽日本ip地址，挂加速器和在日本的小伙伴可以联系我开个权限"}
-            </p>
           </div>
           <div>
             类型

@@ -42,7 +42,9 @@ interface SettingsState {
   userInfo: UserInfo | null,
   area: string,
   phone: string,
+  answer: string,
   isPWBtnLoading: boolean,
+  isAnsBtnLoading: boolean,
 }
 
 class Settings extends Component<SettingsProps & FormComponentProps, SettingsState> {
@@ -58,7 +60,9 @@ class Settings extends Component<SettingsProps & FormComponentProps, SettingsSta
       userInfo: null,
       area: "",
       phone: "",
+      answer: "",
       isPWBtnLoading: false,
+      isAnsBtnLoading: false,
     };
   }
 
@@ -109,6 +113,7 @@ class Settings extends Component<SettingsProps & FormComponentProps, SettingsSta
       userInfo,
       area,
       phone,
+      answer,
     } = this.state;
     const Charas = UnitsArr.sort(reverseCompare).map((e, i) => {
       return (
@@ -222,6 +227,31 @@ class Settings extends Component<SettingsProps & FormComponentProps, SettingsSta
         <ItemBox style={{marginTop: '30px'}}>
           <div>
             <div className="body_title">
+              {"提示区域受限了？"}
+            </div>
+            <div className="body_subtitle">
+              {"回答一个问题即可解锁：对不起，______（两个字，简繁都行）"}
+            </div>
+            <div>
+              <Input
+                placeholder=""
+                value={answer}
+                onChange={this.onAnswerChange}
+                style={{width: '200px', margin: '10px 0'}}
+              />
+            </div>
+            <Button
+              type="primary"
+              onClick={this.onAnswerSubmit}
+              loading={this.state.isAnsBtnLoading}
+            >
+              提交
+            </Button>
+          </div>
+        </ItemBox>
+        <ItemBox style={{marginTop: '30px'}}>
+          <div>
+            <div className="body_title">
               {"修改密码"}
             </div>
             <div style={{maxWidth: '300px'}}>
@@ -328,6 +358,12 @@ class Settings extends Component<SettingsProps & FormComponentProps, SettingsSta
     });
   }
 
+  private onAnswerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({
+      answer: e.target.value,
+    });
+  }
+
   private onUnitChange = (e: number) => {
     this.setState({
       selected: e,
@@ -344,6 +380,45 @@ class Settings extends Component<SettingsProps & FormComponentProps, SettingsSta
     this.setState({
       enable2x: e,
     });
+  }
+
+  private onAnswerSubmit = async() => {
+    const { answer } = this.state;
+    if (!["优衣", "優衣"].includes(answer)) {
+      return Modal.info({
+        title:"再想想答案吧",
+        content: "其他主角分别是狼，侦探，狗，剑圣...（不断增加中",
+      });
+    }
+    this.setState({
+      isAnsBtnLoading: true,
+    });
+
+    try {
+      const r = await postServer("/user/region");
+      this.setState({
+        isAnsBtnLoading: false,
+      });
+      if (r.code === 0) {
+        return Modal.success({
+          title: "已经解除限制了（"
+        });
+      }
+      else if (r.code === 1) {
+        return LoginModal();
+      }
+      else if (r.code === -429) {
+        return TooManyModal();
+      }
+      else {
+        return ErrorModal();
+      }
+    } catch (err) {
+      this.setState({
+        isAnsBtnLoading: false,
+      });
+      return ErrorModal();
+    }
   }
 
   private onSubmit = async() => {

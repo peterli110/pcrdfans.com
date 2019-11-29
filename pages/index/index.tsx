@@ -22,21 +22,34 @@ class Home extends Component<PageProps, any> {
 
   public render() {
     const twitterBtn =
-    <Button 
-      type="primary" 
-      icon="twitter" 
-      style={{ backgroundColor: '#1b95e0', borderColor: '#1b95e0' }} 
-      size="small"
-      onClick={this.onGoTwitter}
-    >
-      ヒカリ@プリコネ
-    </Button>;
+    <a href="https://twitter.com/hikari_xb2" target="_blank">
+      <Button 
+        type="primary" 
+        icon="twitter" 
+        style={{ backgroundColor: '#1b95e0', borderColor: '#1b95e0' }} 
+        size="small"
+      >
+        ヒカリ@プリコネ
+      </Button>
+    </a>;
 
     const gitBtn =
     <GithubBtn
       url={"https://github.com/peterli110/pcrdfans.com"}
       title={"Github"}
     />;
+
+    const blogBtn =
+    <a href="https://blog.pcrdfans.com" target="_blank">
+      <Button 
+        type="primary" 
+        icon="book"
+        style={{ backgroundColor: '#1b95e0', borderColor: '#1b95e0' }} 
+        size="small"
+      >
+        Blog
+      </Button>
+    </a>;
     return (
       <div className="body_div_ctn">
         <ItemBox>
@@ -46,27 +59,15 @@ class Home extends Component<PageProps, any> {
             </div>
             <MessageBox
               title={"公主连结Re: Dive Fan Club开始测试了~"}
-              date={"2019/05/18 02:00"}
               type={"info"}
             />
             <MessageBox
               title={"(ﾉ>ω<)ﾉ这是一个硬核的竞技场数据分析站，更多功能持续开发中"}
-              date={"2019/05/18 02:00"}
               type={"info"}
             />
             <MessageBox
-              title={"Bug和问题反馈: "}
-              date={"2019/9/25 16:40"}
+              title={"如果碰到了区域限制的问题，可以去设置中心看看_(:з」∠)_"}
               type={"info"}
-              extra={twitterBtn}
-              messageStyle={{ lineHeight: "24px", marginRight: "10px" }}
-            />
-            <MessageBox
-              title={"项目地址: "}
-              date={"2019/11/13 00:54"}
-              type={"info"}
-              extra={gitBtn}
-              messageStyle={{lineHeight: "32px", marginRight: "10px"}}
             />
           </div>
         </ItemBox>
@@ -168,8 +169,39 @@ class Home extends Component<PageProps, any> {
         <ItemBox style={{marginTop: '40px'}}>
           <div className="home_notification_ctn">
             <div className="body_title">
+              一些链接
+            </div>
+            <MessageBox
+              title={"Bug和问题反馈: "}
+              type={"info"}
+              extra={twitterBtn}
+              messageStyle={{ lineHeight: "24px", marginRight: "10px" }}
+            />
+            <MessageBox
+              title={"项目地址: "}
+              type={"info"}
+              extra={gitBtn}
+              messageStyle={{lineHeight: "32px", marginRight: "10px"}}
+            />
+            <MessageBox
+              title={"随便写的blog: "}
+              type={"info"}
+              extra={blogBtn}
+              messageStyle={{ lineHeight: "24px", marginRight: "10px" }}
+            />
+          </div>
+        </ItemBox>
+        <ItemBox style={{marginTop: '40px'}}>
+          <div className="home_notification_ctn">
+            <div className="body_title">
               更新历史
             </div>
+            <MessageBox
+              title={"在日本的小伙伴可以在设置中心里自助解除区域限制了"}
+              date={"2019/11/29 12:30"}
+              type={"update"}
+              showImage={false}
+            />
             <MessageBox
               title={"更新了攻击范围计算器的算法，结果更准确了"}
               date={"2019/11/22 18:21"}
@@ -242,20 +274,10 @@ class Home extends Component<PageProps, any> {
               type={"update"}
               showImage={false}
             />
-            <MessageBox
-              title={"大幅优化了竞技场组合排名的加载速度"}
-              date={"2019/07/08 16:30"}
-              type={"update"}
-              showImage={false}
-            />
           </div>
         </ItemBox>
       </div>
     );
-  }
-
-  private onGoTwitter = () => {
-    window.open('https://twitter.com/hikari_xb2', '_blank');
   }
 }
 
