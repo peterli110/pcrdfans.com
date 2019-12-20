@@ -900,7 +900,7 @@
         "cid": 70,
         "id": 108401,
         "name": "チカ（クリスマス）",
-        "equip": false,
+        "equip": true,
         "rarity": 3,
         "maxrarity": 5,
         "type": 7,
@@ -913,7 +913,7 @@
         "cid": 71,
         "id": 108501,
         "name": "クルミ（クリスマス）",
-        "equip": false,
+        "equip": true,
         "rarity": 1,
         "maxrarity": 5,
         "type": 3,
@@ -926,7 +926,7 @@
         "cid": 72,
         "id": 108601,
         "name": "アヤネ（クリスマス）",
-        "equip": false,
+        "equip": true,
         "rarity": 3,
         "maxrarity": 5,
         "type": 3,
@@ -1285,5 +1285,18 @@
         "place": 2,
         "limited": false,
         "comment": "【物理】中衛でパーティの守りを支えるサンタアイドル。\\nスキルで物理攻撃を無効化し、後方の味方が多いほど\\n物理防御力を高めるユニオンバーストで生存力を高める。"
+    },
+    {
+        "cid": 100,
+        "id": 111701,
+        "name": "イリヤ（クリスマス）",
+        "equip": false,
+        "rarity": 3,
+        "maxrarity": 5,
+        "type": 3,
+        "position": 255,
+        "place": 1,
+        "limited": false,
+        "comment": "【魔法】前衛で、血を対価に敵を攻撃する聖夜の吸血鬼。\\n残りＨＰが低い程ダメージが上昇するスキルと、ＨＰを\\n消費するスキルを組み合わせ、絶大な破壊力を発揮する。"
     }
 ]
