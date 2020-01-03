@@ -6,7 +6,6 @@ import { generateNonce } from '@utils/functions';
 import { ErrorModal, TooManyModal } from '@utils/modals';
 import { Button, Form, Icon, Input, Modal } from 'antd';
 import { FormComponentProps } from 'antd/lib/form/Form';
-import Fingerprint2 from 'fingerprintjs2';
 import stringify from 'json-stable-stringify';
 import moment from 'moment-timezone';
 import Link from 'next/link';
@@ -14,6 +13,7 @@ import Router from 'next/router';
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
+// import Fingerprint2 from 'fingerprintjs2';
 
 
 
@@ -41,14 +41,16 @@ class LoginComponent extends Component<LoginProps & FormComponentProps, LoginSta
   }
 
   public componentDidMount() {
+    /*
     const options = {
       excludes: { plugins: true, adBlock: true }
     };
+    */
 
     if (this.props.user.isLogin && this.props.user.userInfo) {
       Router.replace("/");
     }
-
+    /*
     if (window.requestIdleCallback) {
       window.requestIdleCallback(async () => {
         const components = await Fingerprint2.getPromise(options);
@@ -62,6 +64,7 @@ class LoginComponent extends Component<LoginProps & FormComponentProps, LoginSta
         this.fingerprint = Fingerprint2.x64hash128(values.join(''), 31);
       }, 500);
     }
+    */
   }
 
   public componentWillUnmount() {
@@ -175,11 +178,13 @@ class LoginComponent extends Component<LoginProps & FormComponentProps, LoginSta
       return;
     }
 
+    /*
     if (!this.fingerprint) {
       return Modal.error({
         title: `验证信息加载中，请稍后再试`,
       });
     }
+    */
 
     if (loginType === 'signup') {
       console.log('regex test');
@@ -205,7 +210,7 @@ class LoginComponent extends Component<LoginProps & FormComponentProps, LoginSta
         kyoka: userName,
         kokoro: password,
         m: loginType,
-        fp: this.fingerprint, 
+        fp: "pcrdfans.com", 
       };
 
       if (loginType === 'signup') {

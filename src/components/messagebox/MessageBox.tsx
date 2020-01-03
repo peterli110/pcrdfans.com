@@ -3,7 +3,7 @@ import { randomInt } from '@utils/index';
 import { default as React, ReactNode, useEffect, useState } from 'react';
 
 interface MessageBoxProps {
-  title: string,
+  title?: string,
   date?: string,
   type: 'info' | 'update',
   showImage?: boolean,
@@ -14,7 +14,7 @@ interface MessageBoxProps {
 
 
 const MessageBox: React.FC<MessageBoxProps> = ({ 
-  title, 
+  title = "", 
   date, 
   type, 
   showImage = true, 

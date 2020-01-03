@@ -67,7 +67,7 @@ const Character: React.FC<CharacterProps & AppState> = ({
   }
 
   const ratio = width / 60;
-  const size = (show6x ? 184 : 618) * ratio; // width of charas.png
+  const size = (show6x ? 184 : 680) * ratio; // width of charas.png
   const backX = mapValue.x * ratio;
   const backY = mapValue.y * ratio;
 
